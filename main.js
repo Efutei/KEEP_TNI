@@ -6,7 +6,8 @@ var ASSETS = {
     tani: './img/school_text_tani.png'
   },
   sound: {
-    shot: './sound/cannon1.mp3'
+    shot: './sound/cannon1.mp3',
+    out: './sound/bomb2.mp3'
   }
 };
 var SCREEN_WIDTH  = 465;
@@ -42,6 +43,7 @@ phina.define('MainScene', {
     this.tani.bound();
     this.tani.rotateTNI(this.tani.powerX);
     if(this.tani.isDead()){
+      SoundManager.play('out');
       this.exit({
         score: this.score
       });
