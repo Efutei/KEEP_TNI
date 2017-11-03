@@ -3,11 +3,32 @@ phina.globalize();
 
 var ASSETS = {
   image: {
-    tani: './img/school_text_tani.png'
+    tani: './img/school_text_tani.png',
+    explosion: './img/explosion.png'
   },
   sound: {
     shot: './sound/cannon1.mp3',
     out: './sound/bomb2.mp3'
+  },
+  spritesheet: {
+    "explosion_ss":
+    {
+      // フレーム情報
+      "frame": {
+        "width": 64, // 1フレームの画像サイズ（横）
+        "height": 64, // 1フレームの画像サイズ（縦）
+        "cols": 4, // フレーム数（横）
+        "rows": 4, // フレーム数（縦）
+      },
+      // アニメーション情報
+      "animations" : {
+        "explosion": { // アニメーション名
+          "frames": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15], // フレーム番号範囲
+          "next": null, // 次のアニメーション
+          "frequency": 2, // アニメーション間隔
+        },
+      }
+    }
   }
 };
 var SCREEN_WIDTH  = 465;
@@ -27,6 +48,8 @@ phina.define('MainScene', {
     this.scoreLabel.y = 64 // y 座標
     this.scoreLabel.fill = 'white'; // 塗りつぶし色
     this.tani = Tani().addChildTo(this);
+    this.explosion = Explosion().addChildTo(this);
+    this.anim = FrameAnimation('explosion_ss').attachTo(this.explosion);
   },
   update: function(app){
     this.scoreLabel.text = this.score;
@@ -34,6 +57,7 @@ phina.define('MainScene', {
     if(p.getPointingStart()){
       SoundManager.play('shot');
       this.distance = this.tani.calcDistance(p.x, p.y);
+      this.animationExplosion(p.x, p.y);
       if(this.tani.checkHit(this.distance)){
         this.tani.flyHigh(p.x, p.y, this.score);
         this.score += 100;
@@ -45,9 +69,17 @@ phina.define('MainScene', {
     if(this.tani.isDead()){
       SoundManager.play('out');
       this.exit({
-        score: this.score
+        score: this.score,
+        message: "留年には気をつけよう！",
+        url: "https://efutei.github.io/KEEP_TNI/"
       });
     }
+  },
+  animationExplosion: function(x, y){
+    this.explosion.alpha = 1;
+    this.anim.gotoAndPlay('explosion');
+    this.explosion.x = x;
+    this.explosion.y = y;
   }
 });
 phina.define('Tani', {
@@ -95,6 +127,15 @@ phina.define('Tani', {
       return this.y > (SCREEN_HEIGHT + 30);
   }
 });
+phina.define('Explosion',{
+  superClass: 'Sprite',
+  init: function(){
+    this.superInit('explosion', 128, 120);
+    this.x = SCREEN_WIDTH / 2;
+    this.y = SCREEN_HEIGHT / 2;
+    this.alpha = 0;
+  },
+})
 
 // メイン処理
 phina.main(function() {
@@ -106,6 +147,13 @@ phina.main(function() {
     height: SCREEN_HEIGHT,
     assets: ASSETS,
     backgroundColor: '#353',
+  });
+  //iphone用ダミー音
+  app.domElement.addEventListener('touchend', function dummy() {
+    var s = phina.asset.Sound();
+    s.loadFromBuffer();
+    s.play().stop();
+    app.domElement.removeEventListener('touchend', dummy);
   });
   // アプリケーション実行
   app.run();
