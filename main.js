@@ -7,8 +7,8 @@ var ASSETS = {
     explosion: './img/explosion.png'
   },
   sound: {
-    //shot: './sound/cannon1.mp3',
-    //out: './sound/bomb2.mp3'
+    shot: './sound/cannon1.mp3',
+    out: './sound/bomb2.mp3'
   },
   spritesheet: {
     "explosion_ss":
@@ -55,7 +55,7 @@ phina.define('MainScene', {
     this.scoreLabel.text = this.score;
     var p = app.pointer;
     if(p.getPointingStart()){
-      //SoundManager.play('shot');
+      SoundManager.play('shot');
       this.distance = this.tani.calcDistance(p.x, p.y);
       this.animationExplosion(p.x, p.y);
       if(this.tani.checkHit(this.distance)){
@@ -67,7 +67,7 @@ phina.define('MainScene', {
     this.tani.bound();
     this.tani.rotateTNI(this.tani.powerX);
     if(this.tani.isDead()){
-      //SoundManager.play('out');
+      SoundManager.play('out');
       this.exit({
         score: this.score
       });
