@@ -107,6 +107,13 @@ phina.main(function() {
     assets: ASSETS,
     backgroundColor: '#353',
   });
+  //iphone用ダミー音
+  app.domElement.addEventListener('touchend', function dummy() {
+    var s = phina.asset.Sound();
+    s.loadFromBuffer();
+    s.play().stop();
+    app.domElement.removeEventListener('touchend', dummy);
+  });
   // アプリケーション実行
   app.run();
 });
