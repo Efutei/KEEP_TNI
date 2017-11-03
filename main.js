@@ -69,7 +69,8 @@ phina.define('MainScene', {
     if(this.tani.isDead()){
       SoundManager.play('out');
       this.exit({
-        score: this.score
+        score: this.score,
+        url: "https://efutei.github.io/KEEP_TNI/"
       });
     }
   },
