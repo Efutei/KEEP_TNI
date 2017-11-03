@@ -69,7 +69,9 @@ phina.define('MainScene', {
     if(this.tani.isDead()){
       //SoundManager.play('out');
       this.exit({
-        score: this.score
+        score: this.score,
+        message: "留年には気をつけよう！",
+        url: "https://efutei.github.io/KEEP_TNI/"
       });
     }
   },
