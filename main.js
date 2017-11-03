@@ -70,10 +70,7 @@ phina.define('MainScene', {
       SoundManager.play('out');
       this.exit({
         score: this.score,
-<<<<<<< HEAD
-=======
         message: "留年には気をつけよう！",
->>>>>>> test
         url: "https://efutei.github.io/KEEP_TNI/"
       });
     }
