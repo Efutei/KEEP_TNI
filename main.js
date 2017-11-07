@@ -68,11 +68,14 @@ phina.define('MainScene', {
     this.tani.rotateTNI(this.tani.powerX);
     if(this.tani.isDead()){
       SoundManager.play('out');
+      this.tani.apocalypse(this);
+      /*
       this.exit({
         score: this.score,
         message: "留年には気をつけよう！",
         url: "https://efutei.github.io/KEEP_TNI/"
       });
+      */
     }
   },
   animationExplosion: function(x, y){
@@ -124,7 +127,22 @@ phina.define('Tani', {
     }
   },
   isDead: function(){
-      return this.y > (SCREEN_HEIGHT + 30);
+    return this.y > (SCREEN_HEIGHT + 30);
+  },
+  apocalypse: function(self){
+    var effectFinish = CircleShape().addChildTo(self);
+    effectFinish.setPosition(this.x, this.y);
+    effectFinish.width = SCREEN_WIDTH;
+    effectFinish.height = SCREEN_HEIGHT;
+    effectFinish.fill = 'yellow';
+    effectFinish.stroke = 'gold';
+    effectFinish.strokeWidth = 8;
+    effectFinish.tweener.to({
+      width:0,
+    },1000,"easeInOutCirc")
+    .call(function(){
+
+    });
   }
 });
 phina.define('Explosion',{
