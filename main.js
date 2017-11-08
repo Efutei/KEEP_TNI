@@ -6,12 +6,10 @@ var ASSETS = {
     tani: './img/school_text_tani.png',
     explosion: './img/explosion.png'
   },
-  /*
   sound: {
     shot: './sound/cannon1.mp3',
     out: './sound/bomb2.mp3'
   },
-  */
   spritesheet: {
     "explosion_ss":
     {
@@ -68,18 +66,11 @@ phina.define('MainScene', {
     }
 
     if(this.tani.isDead()){
-      //SoundManager.play('out');
+      SoundManager.play('out');
       if(this.apocalypseNotDone){
         this.tani.apocalypse(this);
         this.apocalypseNotDone = false;
       }
-      /*
-      this.exit({
-        score: this.score,
-        message: "留年には気をつけよう！",
-        url: "https://efutei.github.io/KEEP_TNI/"
-      });
-      */
     }else{
       this.tani.move();
       this.tani.bound();
