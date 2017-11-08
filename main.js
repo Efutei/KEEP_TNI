@@ -70,6 +70,7 @@ phina.define('MainScene', {
     if(this.tani.isDead()){
       if(this.apocalypseNotDone){
         SoundManager.play('out');
+        SoundManager.stopMusic();
         this.tani.apocalypse(this);
         this.apocalypseNotDone = false;
       }
