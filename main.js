@@ -56,7 +56,7 @@ phina.define('MainScene', {
     this.scoreLabel.text = this.score;
     var p = app.pointer;
     if(p.getPointingStart()){
-      //SoundManager.play('shot');
+      SoundManager.play('shot');
       this.distance = this.tani.calcDistance(p.x, p.y);
       this.animationExplosion(p.x, p.y);
       if(this.tani.checkHit(this.distance)){
@@ -66,8 +66,8 @@ phina.define('MainScene', {
     }
 
     if(this.tani.isDead()){
-      SoundManager.play('out');
       if(this.apocalypseNotDone){
+        SoundManager.play('out');
         this.tani.apocalypse(this);
         this.apocalypseNotDone = false;
       }
