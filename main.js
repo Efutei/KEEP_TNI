@@ -8,7 +8,8 @@ var ASSETS = {
   },
   sound: {
     shot: './sound/cannon1.mp3',
-    out: './sound/bomb2.mp3'
+    out: './sound/bomb2.mp3',
+    bgm: './sound/dropping_tni.m4a'
   },
   spritesheet: {
     "explosion_ss":
@@ -51,6 +52,7 @@ phina.define('MainScene', {
     this.explosion = Explosion().addChildTo(this);
     this.anim = FrameAnimation('explosion_ss').attachTo(this.explosion);
     this.apocalypseNotDone = true;
+    SoundManager.playMusic('bgm');
   },
   update: function(app){
     this.scoreLabel.text = this.score;
