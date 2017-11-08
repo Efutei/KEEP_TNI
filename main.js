@@ -8,7 +8,8 @@ var ASSETS = {
   },
   sound: {
     shot: './sound/cannon1.mp3',
-    out: './sound/bomb2.mp3'
+    out: './sound/bomb2.mp3',
+    bgm: './sound/dropping_tni.m4a'
   },
   spritesheet: {
     "explosion_ss":
@@ -51,6 +52,7 @@ phina.define('MainScene', {
     this.explosion = Explosion().addChildTo(this);
     this.anim = FrameAnimation('explosion_ss').attachTo(this.explosion);
     this.apocalypseNotDone = true;
+    SoundManager.playMusic('bgm');
   },
   update: function(app){
     this.scoreLabel.text = this.score;
@@ -126,7 +128,7 @@ phina.define('Tani', {
     }
   },
   isDead: function(){
-    return this.y > (SCREEN_HEIGHT + 60);
+    return this.y > (SCREEN_HEIGHT + 90);
   },
   apocalypse: function(self){
     var effectFinish = RectangleShape({
@@ -139,7 +141,7 @@ phina.define('Tani', {
       width:0,
       alpha:0
     },500,"easeInOutCirc")
-    .wait(500)
+    .wait(300)
     .call(function(){
       self.exit({
         score: self.score,
