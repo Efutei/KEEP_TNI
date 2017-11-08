@@ -6,10 +6,12 @@ var ASSETS = {
     tani: './img/school_text_tani.png',
     explosion: './img/explosion.png'
   },
+  /*
   sound: {
     shot: './sound/cannon1.mp3',
     out: './sound/bomb2.mp3'
   },
+  */
   spritesheet: {
     "explosion_ss":
     {
@@ -50,12 +52,13 @@ phina.define('MainScene', {
     this.tani = Tani().addChildTo(this);
     this.explosion = Explosion().addChildTo(this);
     this.anim = FrameAnimation('explosion_ss').attachTo(this.explosion);
+    this.apocalypseNotDone = true;
   },
   update: function(app){
     this.scoreLabel.text = this.score;
     var p = app.pointer;
     if(p.getPointingStart()){
-      SoundManager.play('shot');
+      //SoundManager.play('shot');
       this.distance = this.tani.calcDistance(p.x, p.y);
       this.animationExplosion(p.x, p.y);
       if(this.tani.checkHit(this.distance)){
@@ -63,12 +66,13 @@ phina.define('MainScene', {
         this.score += 100;
       }
     }
-    this.tani.move();
-    this.tani.bound();
-    this.tani.rotateTNI(this.tani.powerX);
+
     if(this.tani.isDead()){
-      SoundManager.play('out');
-      this.tani.apocalypse(this);
+      //SoundManager.play('out');
+      if(this.apocalypseNotDone){
+        this.tani.apocalypse(this);
+        this.apocalypseNotDone = false;
+      }
       /*
       this.exit({
         score: this.score,
@@ -76,6 +80,10 @@ phina.define('MainScene', {
         url: "https://efutei.github.io/KEEP_TNI/"
       });
       */
+    }else{
+      this.tani.move();
+      this.tani.bound();
+      this.tani.rotateTNI(this.tani.powerX);
     }
   },
   animationExplosion: function(x, y){
@@ -127,21 +135,26 @@ phina.define('Tani', {
     }
   },
   isDead: function(){
-    return this.y > (SCREEN_HEIGHT + 30);
+    return this.y > (SCREEN_HEIGHT + 60);
   },
   apocalypse: function(self){
-    var effectFinish = CircleShape().addChildTo(self);
-    effectFinish.setPosition(this.x, this.y);
-    effectFinish.width = SCREEN_WIDTH;
-    effectFinish.height = SCREEN_HEIGHT;
-    effectFinish.fill = 'yellow';
-    effectFinish.stroke = 'gold';
-    effectFinish.strokeWidth = 8;
+    var effectFinish = RectangleShape({
+      width : SCREEN_WIDTH * 2,
+      height : SCREEN_HEIGHT * 2,
+      fill : 'yellow'
+    }).addChildTo(self);
+    effectFinish.setPosition(this.x, SCREEN_HEIGHT);
     effectFinish.tweener.to({
       width:0,
-    },1000,"easeInOutCirc")
+      alpha:0
+    },500,"easeInOutCirc")
+    .wait(500)
     .call(function(){
-
+      self.exit({
+        score: self.score,
+        message: "留年には気をつけよう！",
+        url: "https://efutei.github.io/KEEP_TNI/"
+      });
     });
   }
 });
