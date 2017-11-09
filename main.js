@@ -67,6 +67,8 @@ phina.define('MainScene', {
       }
     }
 
+    this.changeBGColor();
+
     if(this.tani.isDead()){
       if(this.apocalypseNotDone){
         SoundManager.play('out');
@@ -85,6 +87,25 @@ phina.define('MainScene', {
     this.anim.gotoAndPlay('explosion');
     this.explosion.x = x;
     this.explosion.y = y;
+  },
+  changeBGColor: function(){
+    if(this.score < 1000){
+      this.backgroundColor = '#335';
+    }else if(this.score < 2000){
+      this.backgroundColor = '#A33';
+    }else if(this.score < 3000){
+      this.backgroundColor = '#AA3';
+    }else if(this.score < 4000){
+      this.backgroundColor = '#3AA';
+    }else if(this.score < 5000){
+      this.backgroundColor = '#A3A';
+    }else if(this.score < 6000){
+      this.backgroundColor = '#33A';
+    }else if(this.score < 7000){
+      this.backgroundColor = '#AA3';
+    }else{
+      this.backgroundColor = '#AAA';
+    }
   }
 });
 phina.define('Tani', {
