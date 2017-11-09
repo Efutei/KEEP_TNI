@@ -94,15 +94,13 @@ phina.define('MainScene', {
     }else if(this.score < 2000){
       this.backgroundColor = '#A33';
     }else if(this.score < 3000){
-      this.backgroundColor = '#AA3';
+      this.backgroundColor = '#773';
     }else if(this.score < 4000){
       this.backgroundColor = '#3AA';
     }else if(this.score < 5000){
       this.backgroundColor = '#A3A';
     }else if(this.score < 6000){
       this.backgroundColor = '#33A';
-    }else if(this.score < 7000){
-      this.backgroundColor = '#AA3';
     }else{
       this.backgroundColor = '#AAA';
     }
