@@ -41,7 +41,7 @@ phina.define('MainScene', {
   init: function() {
     this.superInit();
     // 背景色を指定
-    this.backgroundColor = '#335';
+    this.backgroundColor = '#334';
     // ラベルを生成
     this.score = 0;
     this.scoreLabel = Label(this.score).addChildTo(this);
