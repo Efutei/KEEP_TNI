@@ -107,11 +107,18 @@ phina.define('MainScene', {
   },
   getRank: function(self){
     var script = phina.asset.Script();
-    var src = "?";
+    //TODO:set URL
+    var src = "hogehoge?";
     src += "score="+this.scoreCounter+"&callback=cameRankData";
     script.load(src);
   }
 });
+
+function cameRankData(json){
+  var newMessage = json.response.rank + " / " + json.response.total;
+  thisResult.messageLabel.text = newMessage;
+}
+
 phina.define('Tani', {
   superClass: 'Sprite',
   init: function(){
