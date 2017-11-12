@@ -104,6 +104,12 @@ phina.define('MainScene', {
     }else{
       this.backgroundColor = '#AAA';
     }
+  },
+  getRank: function(self){
+    var script = phina.asset.Script();
+    var src = "?";
+    src += "score="+this.scoreCounter+"&callback=cameRankData";
+    script.load(src);
   }
 });
 phina.define('Tani', {
