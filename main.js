@@ -34,6 +34,7 @@ var ASSETS = {
 };
 var SCREEN_WIDTH  = 465;
 var SCREEN_HEIGHT = 665;
+var thisResult;
 
 // MainScene クラスを定義
 phina.define('MainScene', {
@@ -73,6 +74,7 @@ phina.define('MainScene', {
       if(this.apocalypseNotDone){
         SoundManager.play('out');
         SoundManager.stopMusic();
+        this.getRank(this);
         this.tani.apocalypse(this);
         this.apocalypseNotDone = false;
       }
@@ -104,8 +106,20 @@ phina.define('MainScene', {
     }else{
       this.backgroundColor = '#AAA';
     }
+  },
+  getRank: function(self){
+    var script = phina.asset.Script();
+    var src = "https://script.google.com/macros/s/AKfycbxX1gtjVoswR0ZtQpgMOJMARikZkaWqRX54unAl1HfQQ5OV5TNS/exec?";
+    src += "score="+this.score+"&callback=cameRankData";
+    script.load(src);
   }
 });
+
+function cameRankData(json){
+  var newMessage = json.response.rank + " / " + json.response.total;
+  thisResult.rankingLabel.text = newMessage;
+}
+
 phina.define('Tani', {
   superClass: 'Sprite',
   init: function(){
@@ -165,7 +179,7 @@ phina.define('Tani', {
     .call(function(){
       self.exit({
         score: self.score,
-        message: "留年には気をつけよう！",
+        message: "ランキング取得中...",
         url: "https://efutei.github.io/KEEP_TNI/"
       });
     });
@@ -179,7 +193,131 @@ phina.define('Explosion',{
     this.y = SCREEN_HEIGHT / 2;
     this.alpha = 0;
   },
-})
+});
+
+// リザルトシーン上書き
+phina.define('ResultScene', {
+  superClass: 'DisplayScene',
+  /**
+   * @constructor
+   */
+  init: function(params) {
+    params = ({}).$safe(params, phina.game.ResultScene.defaults);
+    this.superInit(params);
+
+    var message = params.message.format(params);
+
+    this.backgroundColor = params.backgroundColor;
+
+    thisResult = this;
+
+    this.fromJSON({
+      children: {
+        scoreText: {
+          className: 'phina.display.Label',
+          arguments: {
+            text: 'score',
+            fill: params.fontColor,
+            stroke: null,
+            fontSize: 48,
+          },
+          x: this.gridX.span(8),
+          y: this.gridY.span(3),
+        },
+        scoreLabel: {
+          className: 'phina.display.Label',
+          arguments: {
+            text: params.score+'',
+            fill: params.fontColor,
+            stroke: null,
+            fontSize: 72,
+          },
+          x: this.gridX.span(8),
+          y: this.gridY.span(5),
+        },
+
+        rankingLabel: {
+          className: 'phina.display.Label',
+          arguments: {
+            text: message,
+            fill: params.fontColor,
+            stroke: null,
+            fontSize: 32,
+          },
+          x: this.gridX.center(),
+          y: this.gridY.span(8),
+        },
+
+        messageLabel: {
+          className: 'phina.display.Label',
+          arguments: {
+            text: "留年には気をつけよう！",
+            fill: params.fontColor,
+            stroke: null,
+            fontSize: 32,
+          },
+          x: this.gridX.center(),
+          y: this.gridY.span(10),
+        },
+
+        shareButton: {
+          className: 'phina.ui.Button',
+          arguments: [{
+            text: '★',
+            width: 128,
+            height: 128,
+            fontColor: params.fontColor,
+            fontSize: 50,
+            cornerRadius: 64,
+            fill: 'rgba(240, 240, 240, 0.5)',
+            // stroke: '#aaa',
+            // strokeWidth: 2,
+          }],
+          x: this.gridX.center(-3),
+          y: this.gridY.span(13),
+        },
+        playButton: {
+          className: 'phina.ui.Button',
+          arguments: [{
+            text: '▶',
+            width: 128,
+            height: 128,
+            fontColor: params.fontColor,
+            fontSize: 50,
+            cornerRadius: 64,
+            fill: 'rgba(240, 240, 240, 0.5)',
+            // stroke: '#aaa',
+            // strokeWidth: 2,
+          }],
+          x: this.gridX.center(3),
+          y: this.gridY.span(13),
+
+          interactive: true,
+          onpush: function() {
+            this.exit();
+          }.bind(this),
+        },
+      }
+    });
+
+    if (params.exitType === 'touch') {
+      this.on('pointend', function() {
+        this.exit();
+      });
+    }
+
+    this.shareButton.onclick = function() {
+      var text = 'Score: {0}\n{1}'.format(params.score, this.parent.messageLabel.text);
+      var url = phina.social.Twitter.createURL({
+        text: text,
+        hashtags: params.hashtags,
+        url: params.url,
+      });
+      window.open(url, 'share window', 'width=480, height=320');
+    };
+  },
+});
+
 
 // メイン処理
 phina.main(function() {
