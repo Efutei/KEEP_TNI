@@ -34,6 +34,7 @@ var ASSETS = {
 };
 var SCREEN_WIDTH  = 465;
 var SCREEN_HEIGHT = 665;
+var thisResult;
 
 // MainScene クラスを定義
 phina.define('MainScene', {
@@ -73,6 +74,7 @@ phina.define('MainScene', {
       if(this.apocalypseNotDone){
         SoundManager.play('out');
         SoundManager.stopMusic();
+        this.getRank(this);
         this.tani.apocalypse(this);
         this.apocalypseNotDone = false;
       }
@@ -107,8 +109,7 @@ phina.define('MainScene', {
   },
   getRank: function(self){
     var script = phina.asset.Script();
-    //TODO:set URL
-    var src = "hogehoge?";
+    var src = "https://script.google.com/macros/s/AKfycbxX1gtjVoswR0ZtQpgMOJMARikZkaWqRX54unAl1HfQQ5OV5TNS/exec?";
     src += "score="+this.scoreCounter+"&callback=cameRankData";
     script.load(src);
   }
