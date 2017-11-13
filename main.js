@@ -6,11 +6,13 @@ var ASSETS = {
     tani: './img/school_text_tani.png',
     explosion: './img/explosion.png'
   },
+  /*
   sound: {
     shot: './sound/cannon1.mp3',
     out: './sound/bomb2.mp3',
     bgm: './sound/dropping_tni.m4a'
   },
+  */
   spritesheet: {
     "explosion_ss":
     {
@@ -53,13 +55,13 @@ phina.define('MainScene', {
     this.explosion = Explosion().addChildTo(this);
     this.anim = FrameAnimation('explosion_ss').attachTo(this.explosion);
     this.apocalypseNotDone = true;
-    SoundManager.playMusic('bgm');
+    //SoundManager.playMusic('bgm');
   },
   update: function(app){
     this.scoreLabel.text = this.score;
     var p = app.pointer;
     if(p.getPointingStart()){
-      SoundManager.play('shot');
+      //SoundManager.play('shot');
       this.distance = this.tani.calcDistance(p.x, p.y);
       this.animationExplosion(p.x, p.y);
       if(this.tani.checkHit(this.distance)){
@@ -72,8 +74,8 @@ phina.define('MainScene', {
 
     if(this.tani.isDead()){
       if(this.apocalypseNotDone){
-        SoundManager.play('out');
-        SoundManager.stopMusic();
+        //SoundManager.play('out');
+        //SoundManager.stopMusic();
         this.getRank(this);
         this.tani.apocalypse(this);
         this.apocalypseNotDone = false;
@@ -86,7 +88,7 @@ phina.define('MainScene', {
   },
   animationExplosion: function(x, y){
     this.explosion.alpha = 1;
-    this.anim.gotoAndPlay('explosion');
+    //this.anim.gotoAndPlay('explosion');
     this.explosion.x = x;
     this.explosion.y = y;
   },
@@ -110,7 +112,7 @@ phina.define('MainScene', {
   getRank: function(self){
     var script = phina.asset.Script();
     var src = "https://script.google.com/macros/s/AKfycbxX1gtjVoswR0ZtQpgMOJMARikZkaWqRX54unAl1HfQQ5OV5TNS/exec?";
-    src += "score="+this.scoreCounter+"&callback=cameRankData";
+    src += "score="+this.score+"&callback=cameRankData";
     script.load(src);
   }
 });
