@@ -119,7 +119,7 @@ phina.define('MainScene', {
 
 function cameRankData(json){
   var newMessage = json.response.rank + " / " + json.response.total;
-  thisResult.messageLabel.text = newMessage;
+  thisResult.rankingLabel.text = newMessage;
 }
 
 phina.define('Tani', {
@@ -181,7 +181,7 @@ phina.define('Tani', {
     .call(function(){
       self.exit({
         score: self.score,
-        message: "留年には気をつけよう！",
+        message: "ランキング取得中...",
         url: "https://efutei.github.io/KEEP_TNI/"
       });
     });
@@ -224,7 +224,7 @@ phina.define('ResultScene', {
             fontSize: 48,
           },
           x: this.gridX.span(8),
-          y: this.gridY.span(4),
+          y: this.gridY.span(3),
         },
         scoreLabel: {
           className: 'phina.display.Label',
@@ -235,10 +235,10 @@ phina.define('ResultScene', {
             fontSize: 72,
           },
           x: this.gridX.span(8),
-          y: this.gridY.span(6),
+          y: this.gridY.span(5),
         },
 
-        messageLabel: {
+        rankingLabel: {
           className: 'phina.display.Label',
           arguments: {
             text: message,
@@ -247,7 +247,19 @@ phina.define('ResultScene', {
             fontSize: 32,
           },
           x: this.gridX.center(),
-          y: this.gridY.span(9),
+          y: this.gridY.span(8),
+        },
+
+        messageLabel: {
+          className: 'phina.display.Label',
+          arguments: {
+            text: "留年には気をつけよう！",
+            fill: params.fontColor,
+            stroke: null,
+            fontSize: 32,
+          },
+          x: this.gridX.center(),
+          y: this.gridY.span(10),
         },
 
         shareButton: {
@@ -264,7 +276,7 @@ phina.define('ResultScene', {
             // strokeWidth: 2,
           }],
           x: this.gridX.center(-3),
-          y: this.gridY.span(12),
+          y: this.gridY.span(13),
         },
         playButton: {
           className: 'phina.ui.Button',
@@ -280,7 +292,7 @@ phina.define('ResultScene', {
             // strokeWidth: 2,
           }],
           x: this.gridX.center(3),
-          y: this.gridY.span(12),
+          y: this.gridY.span(13),
 
           interactive: true,
           onpush: function() {
