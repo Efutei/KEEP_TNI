@@ -307,7 +307,7 @@ phina.define('ResultScene', {
     }
 
     this.shareButton.onclick = function() {
-      var text = 'Score: {0}\n{1}'.format(params.score, this.parent.messageLabel.text);
+      var text = 'Score: {0}\nRanking: \n{1}\n{2}'.format(params.score, this.parent.rankingLabel.text, this.parent.messageLabel.text);
       var url = phina.social.Twitter.createURL({
         text: text,
         hashtags: params.hashtags,
